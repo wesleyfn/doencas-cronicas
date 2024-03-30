@@ -1,0 +1,511 @@
+-- Populando a tabela Pessoa (continuação) --
+INSERT INTO Pessoa (id_pessoa, nome, CPF, data_nascimento, sexo, telefone) 
+VALUES 
+(1, 'João Silva', '12345678900', '1990-05-15', 'Masculino', '1234567890'),
+(2, 'Maria Santos', '98765432100', '1985-10-25', 'Feminino', '9876543210'),
+(3, 'Ana Oliveira', '45678912300', '1992-08-20', 'Feminino', '5555555555'),
+(4, 'Pedro Souza', '78912345600', '1988-04-12', 'Masculino', '6666666666'),
+(5, 'Carla Mendes', '15926385200', '1976-12-03', 'Feminino', '7777777777'),
+(6, 'Rafaela Costa', '65498732100', '1995-09-18', 'Feminino', '8888888888'),
+(7, 'Fernando Oliveira', '25836914700', '1993-07-22', 'Masculino', '9999999999'),
+(8, 'Aline Santos', '75395185200', '1990-02-14', 'Feminino', '1010101010'),
+(9, 'Roberto Silva', '36925814700', '1986-11-30', 'Masculino', '1111111111'),
+(10, 'Juliana Mendes', '14725836900', '1978-05-03', 'Feminino', '1212121212'),
+(11, 'Felipe Souza', '98765432100', '1984-08-12', 'Masculino', '1313131313'),
+(12, 'Camila Oliveira', '15975325800', '1981-03-25', 'Feminino', '1414141414'),
+(13, 'Lucas Santos', '35715925800', '1992-06-29', 'Masculino', '1515151515'),
+(14, 'Mariana Costa', '25835795100', '1996-12-10', 'Feminino', '1616161616'),
+(15, 'Gustavo Silva', '98765412300', '1998-04-15', 'Masculino', '1717171717'),
+(16, 'Amanda Santos', '12345678901', '1994-10-20', 'Feminino', '1818181818'),
+(17, 'Diego Oliveira', '32165498701', '1991-01-28', 'Masculino', '1919191919'),
+(18, 'Laura Costa', '45678912301', '1987-07-05', 'Feminino', '2020202020'),
+(19, 'Marcelo Santos', '85296374101', '1983-09-08', 'Masculino', '2121212121'),
+(20, 'Patrícia Oliveira', '65412398701', '1980-11-11', 'Feminino', '2222222222'),
+(21, 'Vinícius Silva', '95135745601', '1997-02-16', 'Masculino', '2323232323'),
+(22, 'Caroline Santos', '74185296301', '1999-08-23', 'Feminino', '2424242424'),
+(23, 'Daniel Costa', '36985214701', '1995-04-30', 'Masculino', '2525252525'),
+(24, 'Tatiane Oliveira', '15935785201', '1992-11-06', 'Feminino', '2626262626'),
+(25, 'Fábio Silva', '98765432102', '1988-03-14', 'Masculino', '2727272727'),
+(26, 'Isabela Santos', '65432198702', '1984-05-18', 'Feminino', '2828282828'),
+(27, 'Rodrigo Oliveira', '32198765402', '1981-08-22', 'Masculino', '2929292929'),
+(28, 'Nathália Costa', '78945612302', '1979-01-25', 'Feminino', '3030303030'),
+(29, 'Ricardo Santos', '14725836902', '1976-06-29', 'Masculino', '3131313131'),
+(30, 'Sabrina Oliveira', '98765432103', '1974-09-03', 'Feminino', '3232323232'),
+(31, 'Henrique Silva', '65498732103', '1971-12-08', 'Masculino', '3333333333'),
+(32, 'Renata Santos', '25836914703', '1968-02-12', 'Feminino', '3434343434'),
+(33, 'Leonardo Costa', '75395185203', '1965-05-17', 'Masculino', '3535353535'),
+(34, 'Juliana Oliveira', '36925814703', '1962-08-21', 'Feminino', '3636363636'),
+(35, 'Fernando Silva', '14725836903', '1959-11-24', 'Masculino', '3737373737'),
+(36, 'Luana Santos', '98765432104', '1957-03-01', 'Feminino', '3838383838'),
+(37, 'Marcelo Oliveira', '65498732104', '1954-06-07', 'Masculino', '3939393939'),
+(38, 'Carla Silva', '25836914704', '1951-09-11', 'Feminino', '4040404040'),
+(39, 'Bruno Santos', '75395185204', '1948-12-15', 'Masculino', '4141414141'),
+(40, 'Aline Oliveira', '36925814704', '1946-03-20', 'Feminino', '4242424242'),
+(41, 'Marcelo Silva', '14725836904', '1943-06-24', 'Masculino', '4343434343'),
+(42, 'Ana Santos', '98765432105', '1940-09-28', 'Feminino', '4444444444'),
+(43, 'Lucas Oliveira', '65498732105', '1937-01-02', 'Masculino', '4545454545'),
+(44, 'Gabriela Silva', '25836914705', '1934-04-08', 'Feminino', '4646464646'),
+(45, 'Rafael Santos', '75395185205', '1931-07-13', 'Masculino', '4747474747'),
+(46, 'Jéssica Oliveira', '36925814705', '1928-10-17', 'Feminino', '4848484848'),
+(47, 'Márcio Silva', '14725836905', '1926-01-22', 'Masculino', '4949494949'),
+(48, 'Amanda Santos', '98765432106', '1923-04-28', 'Feminino', '5050505050'),
+(49, 'Pedro Oliveira', '65498732106', '1920-08-02', 'Masculino', '5151515151'),
+(50, 'Fernanda Silva', '25836914706', '1917-11-06', 'Feminino', '5252525252');
+
+-- Gerando os restantes das pessoas --
+
+DELIMITER //
+
+CREATE PROCEDURE GeneratePersonInserts()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE nome VARCHAR(255);
+    DECLARE CPF CHAR(11);
+    DECLARE data_nascimento DATE;
+    DECLARE sexo CHAR(1);
+    DECLARE telefone VARCHAR(15);
+    DECLARE max_id INT;
+    
+    -- Encontrar o maior ID atual na tabela Pessoa
+    SELECT MAX(id_pessoa) INTO max_id FROM Pessoa;
+    
+    IF max_id IS NULL THEN
+        SET max_id = 0;
+    END IF;
+    
+    WHILE i <= 950 DO
+        SET nome = CONCAT('Pessoa', max_id + i);
+        SET CPF = CONCAT(FLOOR(RAND() * 9 + 1),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10),
+                         FLOOR(RAND() * 10));
+        SET data_nascimento = DATE_ADD('1970-01-01', INTERVAL FLOOR(RAND() * 365 * 50) DAY);
+        SET sexo = IF(RAND() < 0.5, 'M', 'F');
+        SET telefone = CONCAT('9', FLOOR(RAND() * 1000000000));
+        
+        INSERT INTO Pessoa (id_pessoa, nome, CPF, data_nascimento, sexo, telefone) 
+        VALUES (max_id + i, nome, CPF, data_nascimento, sexo, telefone);
+        
+        SET i = i + 1;
+    END WHILE;
+    
+    SELECT 'Inserts gerados com sucesso!';
+END//
+
+DELIMITER ;
+
+CALL GeneratePersonInserts();
+
+
+
+-- Populando a tabela Paciente (continuação) --
+-- Associa O id da pessoa com o Id de paciete --
+
+DELIMITER //
+
+CREATE PROCEDURE PopulateCheckIn()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE max_id INT;
+
+    -- Encontrar o maior ID atual na tabela Check_in
+    SELECT MAX(id_check_in) INTO max_id FROM Check_in;
+    
+    IF max_id IS NULL THEN
+        SET max_id = 0;
+    END IF;
+
+    WHILE i <= 1000 DO
+        INSERT INTO Check_in (id_check_in, data_Check_in)
+        VALUES (i, DATE_ADD('1970-01-01', INTERVAL FLOOR(RAND() * 365 * 50) DAY));
+
+        SET i = i + 1;
+    END WHILE;
+
+    SELECT 'Povoamento da tabela Check_in concluído com sucesso!';
+END//
+
+DELIMITER ;
+
+
+CALL PopulateCheckIn();
+
+
+
+-- Populando a tabela Check_in (continuação) --
+-- Populando chekin com procedure --
+
+DELIMITER //
+
+CREATE PROCEDURE PopulateCheckIn()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE max_id INT;
+
+    -- Encontrar o maior ID atual na tabela Check_in
+    SELECT MAX(id_check_in) INTO max_id FROM Check_in;
+    
+    IF max_id IS NULL THEN
+        SET max_id = 0;
+    END IF;
+
+    WHILE i <= 1000 DO
+        INSERT INTO Check_in (id_check_in, data_Check_in)
+        VALUES (i, DATE_ADD('1970-01-01', INTERVAL FLOOR(RAND() * 365 * 50) DAY));
+
+        SET i = i + 1;
+    END WHILE;
+
+    SELECT 'Povoamento da tabela Check_in concluído com sucesso!';
+END//
+
+DELIMITER ;
+
+
+CALL PopulateCheckIn();
+
+
+-- Populando a tabela Prontuario (continuação) --
+-- Associa Paciente com o prontuário --
+DELIMITER //
+
+CREATE PROCEDURE AssociatePatientsWithRecords()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE max_id INT;
+
+    -- Encontrar o maior ID atual na tabela Prontuario
+    SELECT MAX(id_prontuario) INTO max_id FROM Prontuario;
+    
+    IF max_id IS NULL THEN
+        SET max_id = 0;
+    END IF;
+
+    WHILE i <= 1000 DO
+        INSERT INTO Prontuario (id_prontuario, id_paciente_Paciente, id_check_in_Check_in)
+        VALUES (i, i, i);
+
+        SET i = i + 1;
+    END WHILE;
+
+    SELECT 'Associação concluída com sucesso!';
+END//
+
+DELIMITER ;
+
+
+CALL AssociatePatientsWithRecords();
+
+
+
+-- Populando a tabela Sintoma (continuação) --
+INSERT INTO Sintoma (id_sintoma, nome_sintoma, descricao_sintoma, gravidade_sintoma) 
+VALUES
+(1, 'Dor de cabeça', 'Dor leve na região frontal', 1),
+(2, 'Febre', 'Temperatura corporal acima de 38°C', 2), 
+(3, 'Tosse', 'Irritação na garganta com tosse seca', 2),
+(4, 'Dor abdominal', 'Dor intensa na região do abdômen', 3),
+(5, 'Mal-estar', 'Sensação de desconforto geral', 1),
+(6, 'Náuseas', 'Sensação de desconforto no estômago', 2),
+(7, 'Dor muscular', 'Dor intensa nos músculos', 3),
+(8, 'Fadiga', 'Cansaço excessivo', 2),
+(9, 'Dor nas costas', 'Dor na região das costas', 2),
+(10, 'Dor de garganta', 'Irritação e dor ao engolir', 2),
+(11, 'Dor no peito', 'Sensação de pressão ou aperto no peito', 3),
+(12, 'Diarreia', 'Fezes frequentes e líquidas', 2),
+(13, 'Tontura', 'Sensação de desequilíbrio', 2),
+(14, 'Vômitos', 'Expulsão do conteúdo gástrico pela boca', 3),
+(15, 'Inchaço abdominal', 'Aumento do volume do abdômen', 2),
+(16, 'Falta de ar', 'Dificuldade em respirar', 3),
+(17, 'Sangramento nasal', 'Sangramento pelo nariz', 2),
+(18, 'Falta de apetite', 'Perda do desejo de comer', 1),
+(19, 'Polidipsia', 'Sede excessiva', 2),
+(20, 'Prurido', 'Coceira intensa na pele', 2),
+(21, 'Palidez', 'Coloração pálida da pele', 2),
+(22, 'Dor ocular', 'Dor nos olhos', 2),
+(23, 'Dor nas articulações', 'Dor em uma ou mais articulações', 2),
+(24, 'Hemorragia', 'Perda de sangue em grande quantidade', 3),
+(25, 'Confusão mental', 'Desorientação e falta de clareza mental', 3),
+(26, 'Pirexia', 'Febre', 2),
+(27, 'Fotofobia', 'Sensibilidade à luz', 2),
+(28, 'Calafrios', 'Sensação de frio intenso', 2),
+(29, 'Dor torácica', 'Dor na região do tórax', 3),
+(30, 'Alterações no ciclo menstrual', 'Mudanças no período e fluxo menstrual', 2),
+(31, 'Hematomas', 'Manchas roxas na pele causadas por sangramento', 2),
+(32, 'Disúria', 'Dor ao urinar', 2),
+(33, 'Sonolência', 'Estado de sonolência excessiva', 2),
+(34, 'Síncope', 'Perda temporária de consciência', 3),
+(35, 'Vertigem', 'Sensação de rotação ou movimento do ambiente', 2),
+(36, 'Edema', 'Inchaço causado pelo acúmulo de líquido', 2),
+(37, 'Astenia', 'Fraqueza generalizada', 2),
+(38, 'Anorexia', 'Perda do apetite', 1),
+(39, 'Cefaleia', 'Dor de cabeça', 2),
+(40, 'Bradicardia', 'Ritmo cardíaco lento', 3),
+(41, 'Taquicardia', 'Ritmo cardíaco rápido', 3),
+(42, 'Insônia', 'Dificuldade em dormir', 2),
+(43, 'Dor nos membros', 'Dor em um ou mais membros', 2),
+(44, 'Parestesia', 'Sensações anormais na pele', 2),
+(45, 'Dispneia', 'Dificuldade em respirar', 3),
+(46, 'Fotopsia', 'Percepção de flashes de luz', 2),
+(47, 'Fonofobia', 'Sensibilidade a sons', 2),
+(48, 'Sialorreia', 'Produção excessiva de saliva', 2),
+(49, 'Halitose', 'Mau hálito', 2),
+(50, 'Afasia', 'Incapacidade de compreender ou expressar a linguagem', 3);
+
+-- Populando a tabela Condicao (continuação) --
+INSERT INTO Condicao (id_condicao, nome_condicao, descricao_condicao, gravidade_condicao) 
+VALUES 
+(1, 'Gripe', 'Infecção viral comum', 2),
+(2, 'Dor de cabeça crônica', 'Dor persistente na cabeça por mais de 3 meses', 3),
+(3, 'Resfriado', 'Infecção viral com sintomas leves', 1),
+(4, 'Apendicite', 'Inflamação do apêndice', 4),
+(5, 'Indisposição', 'Falta de disposição e energia', 1),
+(6, 'Infecção estomacal', 'Infecção no estômago', 2),
+(7, 'Miopatia', 'Doença muscular', 3),
+(8, 'Fibromialgia', 'Dor crônica generalizada', 3),
+(9, 'Hérnia de disco', 'Protrusão do disco intervertebral', 3),
+(10, 'Amigdalite', 'Inflamação das amígdalas', 2),
+(11, 'Angina', 'Dor no peito causada por problemas cardíacos', 3),
+(12, 'Gastroenterite', 'Inflamação do estômago e intestinos', 2),
+(13, 'Labirintite', 'Inflamação no labirinto do ouvido interno', 3),
+(14, 'Intoxicação alimentar', 'Ingestão de alimentos contaminados', 2),
+(15, 'Ascite', 'Acúmulo anormal de líquido no abdômen', 3),
+(16, 'Asma', 'Doença inflamatória crônica das vias aéreas', 3),
+(17, 'Epistaxe', 'Sangramento nasal', 2),
+(18, 'Anorexia nervosa', 'Distúrbio alimentar caracterizado pela restrição alimentar extrema', 3),
+(19, 'Diabetes mellitus', 'Doença metabólica caracterizada pelo aumento dos níveis de açúcar no sangue', 3),
+(20, 'Dermatite', 'Inflamação da pele', 2),
+(21, 'Anemia', 'Redução da quantidade de glóbulos vermelhos no sangue', 2),
+(22, 'Conjuntivite', 'Inflamação da conjuntiva ocular', 2),
+(23, 'Artrite', 'Inflamação das articulações', 3),
+(24, 'Hemorragia cerebral', 'Sangramento no cérebro', 3),
+(25, 'Demência', 'Declínio cognitivo progressivo', 3),
+(26, 'Infecção', 'Infecção bacteriana ou viral', 2),
+(27, 'Uveíte', 'Inflamação da úvea, a camada média do olho', 3),
+(28, 'Gripe', 'Infecção viral', 2),
+(29, 'Trombose', 'Formação de um coágulo sanguíneo em um vaso sanguíneo', 3),
+(30, 'Endometriose', 'Crescimento anormal de tecido semelhante ao endométrio fora do útero', 3),
+(31, 'Leucemia', 'Câncer que afeta os glóbulos brancos do sangue', 3),
+(32, 'Cistite', 'Inflamação da bexiga', 2),
+(33, 'Depressão', 'Transtorno de humor caracterizado por tristeza persistente', 3),
+(34, 'Arritmia cardíaca', 'Batimento cardíaco irregular', 3),
+(35, 'Hipertireoidismo', 'Produção excessiva de hormônios tireoidianos', 3),
+(36, 'Insuficiência cardíaca', 'Incapacidade do coração de bombear sangue suficiente para atender às necessidades do corpo', 3),
+(37, 'Anemia ferropriva', 'Deficiência de ferro no organismo', 2),
+(38, 'Bulimia nervosa', 'Distúrbio alimentar caracterizado por episódios de compulsão alimentar seguidos por métodos purgativos', 3),
+(39, 'Enxaqueca', 'Dor de cabeça intensa e pulsátil', 2),
+(40, 'Bradicardia sinusal', 'Ritmo cardíaco lento originado no nó sinusal', 3),
+(41, 'Taquicardia sinusal', 'Ritmo cardíaco rápido originado no nó sinusal', 3),
+(42, 'Apneia do sono', 'Interrupções na respiração durante o sono', 3),
+(43, 'Lesão musculoesquelética', 'Lesão nos músculos ou ossos', 2),
+(44, 'Neuropatia periférica', 'Danos nos nervos periféricos', 3),
+(45, 'Pneumonia', 'Inflamação dos pulmões', 3),
+(46, 'Enxaqueca oftálmica', 'Enxaqueca acompanhada de sintomas visuais', 2),
+(47, 'Zumbido no ouvido', 'Percepção de ruídos nos ouvidos', 2),
+(48, 'Sialadenite', 'Inflamação de uma ou mais glândulas salivares', 2),
+(49, 'Halitose', 'Mau hálito persistente', 2),
+(50, 'Afasia', 'Incapacidade de compreender ou expressar a linguagem', 3);
+
+
+-- Populando a tabela Tratamento (continuação) --
+INSERT INTO Tratamento (id_tratamento, nome_tratamento, descricao_tratamento, dosagem_tratamento) 
+VALUES 
+(1, 'Gripe', 'Infecção viral comum', 2),
+(2, 'Dor de cabeça crônica', 'Dor persistente na cabeça por mais de 3 meses', 3),
+(3, 'Xarope para tosse', 'Alivia a tosse irritativa', '10ml a cada 6 horas'),
+(4, 'Cirurgia de apendicectomia', 'Remoção do apêndice inflamado', NULL),
+(5, 'Repouso e hidratação', 'Descanso e ingestão de líquidos', NULL),
+(6, 'Antibiótico', 'Medicamento utilizado no tratamento de infecções bacterianas', '500 mg, 3 vezes ao dia'),
+(7, 'Fisioterapia', 'Tratamento que utiliza exercícios físicos e técnicas de manipulação para reabilitação', '10 sessões, 2 vezes por semana'),
+(8, 'Analgésico', 'Medicamento utilizado para alívio da dor', '1 comprimido, conforme necessidade'),
+(9, 'Cirurgia de hérnia de disco', 'Procedimento cirúrgico para correção de hérnia de disco', 'A critério médico'),
+(10, 'Anti-inflamatório', 'Medicamento utilizado para reduzir a inflamação', '20 mg, 2 vezes ao dia'),
+(11, 'Nitroglicerina', 'Medicamento utilizado para alívio da angina', '0,4 mg sublingual, conforme necessidade'),
+(12, 'Reidratação oral', 'Administração de líquidos para reposição de fluidos corporais perdidos', '500 ml, 2 vezes ao dia'),
+(13, 'Repouso', 'Recomendação de descanso para recuperação', 'Conforme orientação médica'),
+(14, 'Antiemético', 'Medicamento utilizado para controle de náuseas e vômitos', '1 comprimido, 3 vezes ao dia'),
+(15, 'Diurético', 'Medicamento utilizado para aumento da eliminação de líquidos do corpo', '40 mg, 1 vez ao dia'),
+(16, 'Broncodilatador', 'Medicamento utilizado para dilatação dos brônquios', '2 inalações, 4 vezes ao dia'),
+(17, 'Cauterização nasal', 'Procedimento para interromper o sangramento nasal', 'A critério médico'),
+(18, 'Psicoterapia', 'Tratamento psicológico para problemas emocionais e mentais', '10 sessões, 1 vez por semana'),
+(19, 'Insulina', 'Hormônio utilizado no tratamento da diabetes mellitus', '10 UI, conforme necessidade'),
+(20, 'Creme dermatológico', 'Medicamento tópico para tratamento de problemas de pele', 'Aplicar uma camada fina na área afetada, 2 vezes ao dia'),
+(21, 'Suplemento de ferro', 'Suplementação de ferro para tratamento de anemia', '200 mg, 1 vez ao dia'),
+(22, 'Colírio', 'Medicamento oftálmico para tratamento de problemas oculares', '1 gota no olho afetado, 3 vezes ao dia'),
+(23, 'Anti-inflamatório não esteroide', 'Medicamento utilizado para alívio da dor e inflamação', '500 mg, 2 vezes ao dia'),
+(24, 'Cirurgia cerebral', 'Procedimento cirúrgico para correção de problemas cerebrais', 'A critério médico'),
+(25, 'Medicamentos antipsicóticos', 'Medicamentos utilizados no tratamento de transtornos psicóticos', 'Conforme prescrição médica'),
+(26, 'Antiviral', 'Medicamento utilizado no tratamento de infecções virais', 'A critério médico'),
+(27, 'Colírio anti-inflamatório', 'Medicamento oftálmico para tratamento de inflamações oculares', '1 gota no olho afetado, 4 vezes ao dia'),
+(28, 'Vacina contra a gripe', 'Imunização contra a gripe', '1 dose anual'),
+(29, 'Anticoagulante', 'Medicamento utilizado para prevenir a formação de coágulos sanguíneos', '5 mg, 1 vez ao dia'),
+(30, 'Hormônio feminino', 'Medicamento utilizado em terapia de reposição hormonal', 'Conforme prescrição médica'),
+(31, 'Quimioterapia', 'Tratamento que utiliza agentes químicos para combater o câncer', 'Conforme protocolo estabelecido'),
+(32, 'Antibiótico para infecção urinária', 'Medicamento utilizado no tratamento de infecções urinárias', '250 mg, 2 vezes ao dia'),
+(33, 'Antidepressivo', 'Medicamento utilizado no tratamento da depressão', '20 mg, 1 vez ao dia'),
+(34, 'Betabloqueador', 'Medicamento utilizado para controle da frequência cardíaca', '10 mg, 2 vezes ao dia'),
+(35, 'Antitireoidiano', 'Medicamento utilizado para tratamento de hipertireoidismo', '10 mg, 3 vezes ao dia'),
+(36, 'Diurético de alça', 'Medicamento utilizado para aumento da excreção de líquidos', '20 mg, 1 vez ao dia'),
+(37, 'Suplemento vitamínico', 'Suplementação de vitaminas para prevenção de deficiências nutricionais', '1 comprimido, 1 vez ao dia'),
+(38, 'Psicoterapia cognitivo-comportamental', 'Abordagem terapêutica para tratamento de transtornos mentais', '10 sessões, 1 vez por semana'),
+(39, 'Analgesia controlada pelo paciente', 'Método de controle da dor que permite ao paciente administrar a medicação', 'Conforme necessidade'),
+(40, 'Marca-passo cardíaco', 'Dispositivo implantado para controle do ritmo cardíaco', 'A critério médico'),
+(41, 'Cirurgia de tireoide', 'Procedimento cirúrgico para correção de problemas na tireoide', 'A critério médico'),
+(42, 'Pressão positiva contínua nas vias aéreas', 'Tratamento para apneia do sono', 'A critério médico'),
+(43, 'Fisioterapia motora', 'Reabilitação física para melhoria da mobilidade', '10 sessões, 3 vezes por semana'),
+(44, 'Neuroestimulador', 'Dispositivo implantado para estimulação elétrica dos nervos', 'A critério médico'),
+(45, 'Antibiótico para pneumonia', 'Medicamento utilizado no tratamento de pneumonias', '500 mg, 3 vezes ao dia'),
+(46, 'Óculos de grau', 'Dispositivo óptico para correção de problemas de visão', 'Conforme prescrição médica'),
+(47, 'Terapia sonora', 'Tratamento para zumbido no ouvido', '10 sessões, 2 vezes por semana'),
+(48, 'Higiene bucal', 'Prática de cuidados para saúde oral', 'Conforme orientação odontológica'),
+(49, 'Tratamento do mau hálito', 'Medidas para controle e tratamento do mau hálito', 'Conforme orientação odontológica'),
+(50, 'Terapia da fala', 'Treinamento para melhoria da comunicação verbal', '10 sessões, 1 vez por semana');
+
+-- Inserts para Many_Prontuario_has_many_sintomas --
+-- Associa Os Prontuários dos pacientes om os Sintomas existentes
+
+DELIMITER //
+
+CREATE PROCEDURE AssignRandomSymptomToProntuarioMultipleTimes()
+BEGIN
+    DECLARE counter INT DEFAULT 1;
+    DECLARE prontuario_id INT;
+    DECLARE sintoma_id INT;
+
+    WHILE counter <= 100 DO
+        -- Sortear um ID de prontuário entre 1 e 1000
+        SET prontuario_id = FLOOR(RAND() * 1000) + 1;
+
+        -- Sortear um ID de sintoma entre 1 e 50
+        SET sintoma_id = FLOOR(RAND() * 50) + 1;
+
+        -- Verificar se a associação já existe
+        IF NOT EXISTS (
+            SELECT * FROM many_Prontuario_has_many_Sintoma 
+            WHERE id_prontuario_Prontuario = prontuario_id 
+            AND id_sintoma_Sintoma = sintoma_id
+        ) THEN
+            -- Inserir a associação na tabela
+            INSERT INTO many_Prontuario_has_many_Sintoma (id_prontuario_Prontuario, id_sintoma_Sintoma) 
+            VALUES (prontuario_id, sintoma_id);
+
+            SET counter = counter + 1;
+        END IF;
+    END WHILE;
+
+    SELECT 'Associações inseridas com sucesso!';
+END//
+
+DELIMITER ;
+
+CALL AssignRandomSymptomToProntuarioMultipleTimes();
+
+-- FIm do insert many to many --
+
+
+-- Populando a tabela many_Prontuario_has_many_Tratamento (continuação) --
+INSERT INTO many_Prontuario_has_many_Tratamento (id_prontuario_Prontuario, id_tratamento_Tratamento) 
+VALUES 
+(1, 1),
+(2, 2),
+(3, 7),
+(3, 8),
+(3, 9),
+(4, 10),
+(4, 11),
+(4, 12),
+(5, 13),
+(5, 14),
+(5, 15),
+(6, 16),
+(6, 17),
+(6, 18),
+(7, 19),
+(7, 20),
+(7, 21),
+(8, 22),
+(8, 23),
+(8, 24),
+(9, 25),
+(9, 26),
+(9, 27),
+(10, 28),
+(10, 29),
+(10, 30),
+(11, 31),
+(11, 32),
+(11, 33),
+(12, 34),
+(12, 35),
+(12, 36),
+(13, 37),
+(13, 38),
+(13, 39),
+(14, 40),
+(14, 41),
+(14, 42),
+(15, 43),
+(15, 44),
+(15, 45),
+(16, 46),
+(16, 47),
+(16, 48),
+(17, 49),
+(17, 50);
+
+-- Populando a tabela many_Condicao_has_many_Prontuario (continuação) --
+INSERT INTO many_Condicao_has_many_Prontuario (id_condicao_Condicao, id_prontuario_Prontuario) 
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(3, 7),
+(3, 8),
+(3, 9),
+(4, 10),
+(4, 11),
+(4, 12),
+(5, 13),
+(5, 14),
+(5, 15),
+(6, 16),
+(6, 17),
+(6, 18),
+(7, 19),
+(7, 20),
+(7, 21),
+(8, 22),
+(8, 23),
+(8, 24),
+(9, 25),
+(9, 26),
+(9, 27),
+(10, 28),
+(10, 29),
+(10, 30),
+(11, 31),
+(11, 32),
+(11, 33),
+(12, 34),
+(12, 35),
+(12, 36),
+(13, 37),
+(13, 38),
+(13, 39),
+(14, 40),
+(14, 41),
+(14, 42),
+(15, 43),
+(15, 44),
+(15, 45),
+(16, 46),
+(16, 47),
+(16, 48),
+(17, 49),
+(17, 50);
